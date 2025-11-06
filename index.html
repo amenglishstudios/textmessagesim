@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iMessage Conversation Simulator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iMessage Simulator</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="iphone-frame">
-    <div class="notch"></div>
-    <div class="app">
-      <header class="iphone-header">
-        <span class="carrier">Wi-Fi</span>
-        <span class="time">9:41</span>
-        <span class="battery">🔋</span>
-      </header>
-
-      <div class="conversation" id="conversation"></div>
-
-      <div class="controls">
+  <div class="container">
+    <div class="controls">
+      <div class="name-inputs">
+        <input type="text" id="nameA" placeholder="Character 1 Name"/>
+        <input type="text" id="nameB" placeholder="Character 2 Name"/>
+      </div>
+      <div class="message-controls">
         <select id="speaker">
-          <option value="a">Person A</option>
-          <option value="b">Person B</option>
+          <option value="a">Character 1</option>
+          <option value="b">Character 2</option>
         </select>
-        <input type="text" id="messageInput" placeholder="iMessage" />
+        <input type="text" id="messageInput" placeholder="Type your message..."/>
         <button id="sendBtn">Send</button>
       </div>
+      <div class="export-controls">
+        <button id="exportPdfBtn">📄 Export as PDF</button>
+        <button id="exportGifBtn">🎞 Export as GIF</button>
+      </div>
+    </div>
 
-      <footer class="home-bar"></footer>
+    <div class="iphone-frame">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <span class="signal">📶</span>
+        <span class="battery">🔋</span>
+      </div>
+      <div class="contact-name" id="contactName">iMessage</div>
+      <div class="conversation" id="conversation"></div>
+      <div class="home-bar"></div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gif.js.optimized/dist/gif.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
