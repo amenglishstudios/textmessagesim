@@ -8,6 +8,11 @@ const contactName = document.getElementById('contactName');
 const exportPdfBtn = document.getElementById('exportPdfBtn');
 const exportGifBtn = document.getElementById('exportGifBtn');
 
+const defaultAvatars = {
+  a: "https://i.imgur.com/NJ6Yc7n.png",
+  b: "https://i.imgur.com/Yc3GfKZ.png"
+};
+
 function currentTimestamp() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
@@ -18,7 +23,7 @@ function createDeleteButton() {
   btn.textContent = '❌';
   btn.onclick = (e) => {
     e.stopPropagation();
-    btn.parentElement.parentElement.remove();
+    btn.closest('.message').remove();
   };
   return btn;
 }
@@ -27,23 +32,33 @@ function addMessage(speaker, text, timestamp = null) {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message', `person-${speaker}`);
 
+  const avatar = document.createElement('img');
+  avatar.className = 'avatar';
+  avatar.src = defaultAvatars[speaker];
+
+  const bubbleWrapper = document.createElement('div');
+  bubbleWrapper.classList.add('bubble-wrapper');
+
   const bubble = document.createElement('div');
   bubble.classList.add('bubble');
   bubble.textContent = text;
   bubble.appendChild(createDeleteButton());
 
+  const name = speaker === 'a' ? (nameAInput.value || 'Character A') : (nameBInput.value || 'Character B');
+  const nameLabel = document.createElement('div');
+  nameLabel.className = 'name-label';
+  nameLabel.textContent = name;
+
   const timeEl = document.createElement('div');
   timeEl.classList.add('timestamp');
   timeEl.textContent = timestamp || currentTimestamp();
 
-  if (speaker === 'a') {
-    messageDiv.appendChild(bubble);
-    messageDiv.appendChild(timeEl);
-  } else {
-    messageDiv.appendChild(timeEl);
-    messageDiv.appendChild(bubble);
-  }
+  bubbleWrapper.appendChild(bubble);
+  bubbleWrapper.appendChild(nameLabel);
+  bubbleWrapper.appendChild(timeEl);
 
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(bubbleWrapper);
   conversationEl.appendChild(messageDiv);
   conversationEl.scrollTop = conversationEl.scrollHeight;
 }
@@ -53,11 +68,21 @@ function showTypingIndicator(speaker) {
   typingDiv.classList.add('message', `person-${speaker}`);
   typingDiv.id = 'typing-indicator';
 
+  const avatar = document.createElement('img');
+  avatar.className = 'avatar';
+  avatar.src = defaultAvatars[speaker];
+
+  const bubbleWrapper = document.createElement('div');
+  bubbleWrapper.classList.add('bubble-wrapper');
+
   const bubble = document.createElement('div');
   bubble.classList.add('typing-indicator');
   bubble.textContent = 'Typing…';
 
-  typingDiv.appendChild(bubble);
+  bubbleWrapper.appendChild(bubble);
+  typingDiv.appendChild(avatar);
+  typingDiv.appendChild(bubbleWrapper);
+
   conversationEl.appendChild(typingDiv);
   conversationEl.scrollTop = conversationEl.scrollHeight;
 }
