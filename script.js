@@ -1,32 +1,36 @@
-// script.js
-
-// ‑‑ global elements
-const conversationEl = document.getElementById('conversation');
-const messageInput = document.getElementById('messageInput');
 const speakerSelect = document.getElementById('speaker');
+const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
-const saveBtn = document.getElementById('saveBtn');
-const loadBtn = document.getElementById('loadBtn');
-const exportImageBtn = document.getElementById('exportImageBtn');
+const conversationEl = document.getElementById('conversation');
+const nameAInput = document.getElementById('nameA');
+const nameBInput = document.getElementById('nameB');
+const contactName = document.getElementById('contactName');
 const exportPdfBtn = document.getElementById('exportPdfBtn');
+const exportGifBtn = document.getElementById('exportGifBtn');
 
-// Utility: current timestamp string (HH:MM AM/PM)
 function currentTimestamp() {
-  const now = new Date();
-  const options = { hour: '2-digit', minute: '2-digit' };
-  return now.toLocaleTimeString([], options);
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-// Add a message to conversation
+function createDeleteButton() {
+  const btn = document.createElement('button');
+  btn.className = 'delete-btn';
+  btn.textContent = '❌';
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    btn.parentElement.parentElement.remove();
+  };
+  return btn;
+}
+
 function addMessage(speaker, text, timestamp = null) {
   const messageDiv = document.createElement('div');
-  messageDiv.classList.add('message', speaker === 'a' ? 'person-a' : 'person-b');
+  messageDiv.classList.add('message', `person-${speaker}`);
 
   const bubble = document.createElement('div');
   bubble.classList.add('bubble');
   bubble.textContent = text;
-  bubble.setAttribute('contenteditable', 'true');
-  bubble.addEventListener('blur', saveToLocalStorage);
+  bubble.appendChild(createDeleteButton());
 
   const timeEl = document.createElement('div');
   timeEl.classList.add('timestamp');
@@ -44,75 +48,87 @@ function addMessage(speaker, text, timestamp = null) {
   conversationEl.scrollTop = conversationEl.scrollHeight;
 }
 
-// Send button processing
+function showTypingIndicator(speaker) {
+  const typingDiv = document.createElement('div');
+  typingDiv.classList.add('message', `person-${speaker}`);
+  typingDiv.id = 'typing-indicator';
+
+  const bubble = document.createElement('div');
+  bubble.classList.add('typing-indicator');
+  bubble.textContent = 'Typing…';
+
+  typingDiv.appendChild(bubble);
+  conversationEl.appendChild(typingDiv);
+  conversationEl.scrollTop = conversationEl.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const existing = document.getElementById('typing-indicator');
+  if (existing) existing.remove();
+}
+
 sendBtn.addEventListener('click', () => {
   const text = messageInput.value.trim();
   if (!text) return;
+
   const speaker = speakerSelect.value;
+  const nameA = nameAInput.value.trim() || 'Character A';
+  const nameB = nameBInput.value.trim() || 'Character B';
+
+  contactName.textContent = speaker === 'a' ? nameB : nameA;
+
   addMessage(speaker, text);
   messageInput.value = '';
-  saveToLocalStorage();
+
+  const nextSpeaker = speaker === 'a' ? 'b' : 'a';
+  showTypingIndicator(nextSpeaker);
+
+  setTimeout(removeTypingIndicator, 1500);
 });
 
-// Save to localStorage
-function saveToLocalStorage() {
-  const messages = [];
-  conversationEl.querySelectorAll('.message').forEach(msgEl => {
-    const speaker = msgEl.classList.contains('person-a') ? 'a' : 'b';
-    const bubble = msgEl.querySelector('.bubble');
-    const timestamp = msgEl.querySelector('.timestamp').textContent;
-    messages.push({
-      speaker,
-      text: bubble.textContent,
-      timestamp
-    });
-  });
-  localStorage.setItem('imessageSimulatorData', JSON.stringify(messages));
-  console.log('Conversation saved');
-}
-
-// Load from localStorage
-loadBtn.addEventListener('click', () => {
-  const data = localStorage.getItem('imessageSimulatorData');
-  if (!data) {
-    alert('No saved conversation found');
-    return;
-  }
-  const messages = JSON.parse(data);
-  conversationEl.innerHTML = '';
-  messages.forEach(msg => {
-    addMessage(msg.speaker, msg.text, msg.timestamp);
-  });
-  console.log('Conversation loaded');
-});
-
-// Export as image (PNG)
-exportImageBtn.addEventListener('click', () => {
-  html2canvas(conversationEl, { backgroundColor: null }).then(canvas => {
-    const link = document.createElement('a');
-    link.download = 'conversation.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }).catch(err => {
-    console.error('Export image failed:', err);
-    alert('Image export failed');
-  });
-});
-
-// Export as PDF
-exportPdfBtn.addEventListener('click', () => {
+// 📄 Export as PDF
+exportPdfBtn.addEventListener('click', async () => {
   const { jsPDF } = window.jspdf;
-  html2canvas(conversationEl, { backgroundColor: '#ffffff' }).then(canvas => {
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'pt', 'a4');
-    const imgWidth = pdf.internal.pageSize.getWidth();
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  const canvas = await html2canvas(conversationEl, { backgroundColor: '#ffffff' });
+  const imgData = canvas.toDataURL('image/png');
 
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-    // If imgHeight > pageHeight you may add pages ...
-    pdf.save('conversation.pdf');
-  }).catch(err => {
-    console.error('Export pdf failed:', err);
-    alert('PDF export failed');
+  const pdf = new jsPDF('p', 'pt', 'a4');
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const ratio = canvas.height / canvas.width;
+  const height = pageWidth * ratio;
+
+  pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, height);
+  pdf.save('conversation.pdf');
+});
+
+// 🎞 Export as GIF
+exportGifBtn.addEventListener('click', async () => {
+  const messages = [...conversationEl.children];
+  const gif = new GIF({ workers: 2, quality: 10 });
+
+  const tempContainer = document.createElement('div');
+  tempContainer.style.position = 'absolute';
+  tempContainer.style.left = '-9999px';
+  document.body.appendChild(tempContainer);
+
+  for (let i = 0; i < messages.length; i++) {
+    const clone = messages.slice(0, i + 1).map(msg => msg.cloneNode(true));
+    tempContainer.innerHTML = '';
+    clone.forEach(m => tempContainer.appendChild(m));
+
+    const canvas = await html2canvas(tempContainer, { backgroundColor: '#fff' });
+    gif.addFrame(canvas, { delay: 800 });
+  }
+
+  gif.on('finished', (blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'conversation.gif';
+    a.click();
+    URL.revokeObjectURL(url);
+    document.body.removeChild(tempContainer);
   });
+
+  gif.render();
 });
