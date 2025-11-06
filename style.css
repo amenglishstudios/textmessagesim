@@ -1,6 +1,166 @@
-/* ... all previous styles remain ... */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #d0d0d5;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
-/* Bubble delete button */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.controls {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.name-inputs,
+.message-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.name-inputs input,
+.message-controls input,
+select,
+button {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+button {
+  background-color: #007aff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.iphone-frame {
+  background: #fff;
+  width: 375px;
+  height: 667px;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.notch {
+  width: 210px;
+  height: 30px;
+  background: black;
+  border-radius: 0 0 20px 20px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.status-bar {
+  height: 24px;
+  background: #000;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.contact-name {
+  height: 40px;
+  background: #f2f2f7;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 1px solid #ccc;
+}
+
+.conversation {
+  flex: 1;
+  padding: 10px;
+  background: #e5ddd5;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  margin: 6px 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.person-a {
+  justify-content: flex-start;
+}
+
+.person-b {
+  justify-content: flex-end;
+}
+
+.bubble {
+  padding: 10px 15px;
+  border-radius: 20px;
+  max-width: 70%;
+  font-size: 14px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.person-a .bubble {
+  background: #e5e5ea;
+  color: black;
+  border-bottom-left-radius: 4px;
+}
+
+.person-b .bubble {
+  background: #007aff;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: #555;
+  margin: 0 8px;
+}
+
+.typing-indicator {
+  background: #e5e5ea;
+  color: #333;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-style: italic;
+  opacity: 0.6;
+  max-width: 150px;
+}
+
+.home-bar {
+  height: 5px;
+  background: #ccc;
+  width: 134px;
+  margin: 10px auto;
+  border-radius: 5px;
+}
+
+/* Delete button inside bubble */
 .bubble .delete-btn {
   position: absolute;
   top: -5px;
@@ -19,7 +179,7 @@
   z-index: 2;
 }
 
-/* Export buttons row */
+/* Export button styling */
 .export-controls {
   display: flex;
   justify-content: center;
@@ -35,4 +195,13 @@
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 420px) {
+  .iphone-frame {
+    width: 100%;
+    height: 600px;
+    border-radius: 0;
+  }
 }
