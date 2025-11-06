@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iMessage Conversation Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="notch"></div>
+    <div class="app">
+      <header class="iphone-header">
+        <span class="carrier">Wi-Fi</span>
+        <span class="time">9:41</span>
+        <span class="battery">🔋</span>
+      </header>
+
+      <div class="conversation" id="conversation"></div>
+
+      <div class="controls">
+        <select id="speaker">
+          <option value="a">Person A</option>
+          <option value="b">Person B</option>
+        </select>
+        <input type="text" id="messageInput" placeholder="iMessage" />
+        <button id="sendBtn">Send</button>
+      </div>
+
+      <footer class="home-bar"></footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
