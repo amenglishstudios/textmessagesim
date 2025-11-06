@@ -1,0 +1,143 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* iPhone frame */
+.iphone-frame {
+  width: 375px;
+  height: 812px;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 0 0 8px #222, 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Notch */
+.notch {
+  width: 210px;
+  height: 30px;
+  background: #000;
+  border-radius: 0 0 20px 20px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* Header */
+.iphone-header {
+  padding: 5px 12px;
+  background-color: #f2f2f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  height: 44px;
+  border-bottom: 1px solid #ccc;
+  z-index: 1;
+}
+
+/* Conversation */
+.conversation {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background-color: #d2d5dc;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Controls */
+.controls {
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  background: #f2f2f7;
+  border-top: 1px solid #ccc;
+}
+
+.controls input,
+.controls select {
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  font-size: 14px;
+  flex: 1;
+}
+
+.controls button {
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 20px;
+  background-color: #007aff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Message bubbles */
+.message {
+  margin: 8px 0;
+  display: flex;
+  align-items: flex-end;
+}
+.message.person-a {
+  justify-content: flex-start;
+}
+.message.person-b {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: 75%;
+  padding: 10px 15px;
+  font-size: 15px;
+  border-radius: 20px;
+  line-height: 1.4;
+  position: relative;
+}
+.person-a .bubble {
+  background-color: #e5e5ea;
+  color: black;
+  border-bottom-left-radius: 4px;
+}
+.person-b .bubble {
+  background-color: #007aff;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.timestamp {
+  font-size: 10px;
+  margin: 0 8px;
+  color: #555;
+}
+
+/* Home bar */
+.home-bar {
+  width: 134px;
+  height: 5px;
+  background: #ccc;
+  border-radius: 5px;
+  margin: 8px auto;
+}
+
+/* Editable */
+.bubble[contenteditable="true"] {
+  outline: 1px dotted #aaa;
+}
