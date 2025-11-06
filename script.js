@@ -86,7 +86,7 @@ sendBtn.addEventListener('click', () => {
   setTimeout(removeTypingIndicator, 1500);
 });
 
-// 📄 Export as PDF
+// Export PDF
 exportPdfBtn.addEventListener('click', async () => {
   const { jsPDF } = window.jspdf;
   const canvas = await html2canvas(conversationEl, { backgroundColor: '#ffffff' });
@@ -101,7 +101,7 @@ exportPdfBtn.addEventListener('click', async () => {
   pdf.save('conversation.pdf');
 });
 
-// 🎞 Export as GIF
+// Export GIF
 exportGifBtn.addEventListener('click', async () => {
   const messages = [...conversationEl.children];
   const gif = new GIF({ workers: 2, quality: 10 });
