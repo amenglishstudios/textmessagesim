@@ -1,3 +1,4 @@
+// Version 2.1 - fixed layout + avatars + names
 const speakerSelect = document.getElementById('speaker');
 const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
