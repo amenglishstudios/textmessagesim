@@ -101,13 +101,30 @@ button {
 
 .status-bar {
   height: 32px;
-  padding: 0 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 0 16px;
   background: #000;
   color: #fff;
   font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.status-bar .time {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.status-bar .signal {
+  position: absolute;
+  left: 12px;
+}
+
+.status-bar .battery {
+  position: absolute;
+  right: 12px;
 }
 
 .contact-name {
